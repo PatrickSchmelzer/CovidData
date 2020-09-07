@@ -79,14 +79,12 @@ class CovidData():
         with open ('downloaded.csv', 'r') as f:
             for line in f:
                 districtId, district, population, week, year, newCases, newDeaths, totalCases, totalDeaths = line.split(",")
-
                 if district not in data:
                     data[district] = []
-                data[district].append({"Population": population, "Week": week, "Year": year, "NewCases": newCases, "NewDeaths": newDeaths, "TotalCases": totalCases, "TotalDeaths": totalDeaths})
-
+                data[district].append({"District": district, "Population": population, "Week": week, "Year": year, "NewCases": newCases, "NewDeaths": newDeaths, "TotalCases": totalCases, "TotalDeaths": totalDeaths})
         return data
 
-    def getZHData(self):
+    def getZHPlzData(self):
         url = "https://raw.githubusercontent.com/openZH/covid_19/master/fallzahlen_plz/fallzahlen_kanton_ZH_plz.csv"
         csv = requests.get(url).content
         csv_file = open('downloaded.csv', 'wb')
@@ -97,15 +95,10 @@ class CovidData():
         with open ('downloaded.csv', 'r') as f:
             for line in f:
                 plz, date, population, newCases = line.split(",")
-
                 if plz not in data:
                     data[plz] = []
-
-                data.append({"Date": date, "Population": population, "NewCases": newCases})
-
-        for entry in data["8802"]:
-            print(entry)
-        
+                data[plz].append({"Plz": plz, "Date": date, "Population": population, "NewCases": newCases})
+        return data
 
 if __name__ == '__main__':
     covid = CovidData()
@@ -116,6 +109,10 @@ if __name__ == '__main__':
         for d in data["Bezirk Horgen"]:
             print(d)
 
+
+        data = covid.getZHPlzData()
+        for d in data["8802"]:
+            print(d)
     except Exception as e:
         print(e)
         print("Error retreiving data")
