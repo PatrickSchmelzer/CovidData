@@ -79,9 +79,9 @@ class CovidData():
         with open ('downloaded.csv', 'r') as f:
             for line in f:
                 districtId, district, population, week, year, newCases, newDeaths, totalCases, totalDeaths = line.split(",")
-                if district not in data:
-                    data[district] = []
-                data[district].append({"District": district, "Population": population, "Week": week, "Year": year, "NewCases": newCases, "NewDeaths": newDeaths, "TotalCases": totalCases, "TotalDeaths": totalDeaths})
+                if districtId not in data:
+                    data[districtId] = []
+                data[districtId].append({"District": district, "Population": population, "Week": week, "Year": year, "NewCases": newCases, "NewDeaths": newDeaths, "TotalCases": totalCases, "TotalDeaths": totalDeaths})
         return data
 
     def getZHPlzData(self):
@@ -99,20 +99,3 @@ class CovidData():
                     data[plz] = []
                 data[plz].append({"Plz": plz, "Date": date, "Population": population, "NewCases": newCases})
         return data
-
-if __name__ == '__main__':
-    covid = CovidData()
-    try:
-        #newCases, casesPerWeek, stat = covid.getLastWeekSummary("Italy")
-        #print(newCases, casesPerWeek, stat)
-        data = covid.getZHRegionalData()
-        for d in data["Bezirk Horgen"]:
-            print(d)
-
-
-        data = covid.getZHPlzData()
-        for d in data["8802"]:
-            print(d)
-    except Exception as e:
-        print(e)
-        print("Error retreiving data")
